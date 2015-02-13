@@ -1,1 +1,31 @@
+<!doctype html>
+<html>
+
+<head>
+ <meta name="viewport"
+    content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+<script src="{{ url_for('static', filename='bower_components/webcomponentsjs/webcomponents.min.js') }}"></script>
+<link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+
+</head>
+
+<styles>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/metaflask.css') }}">
+</styles>
+<body unresolved>
+<core-header-panel>
+  <core-toolbar>
+   <paper-tabs id="tabs" selected="all" self-end>
+    <paper-tab name="all">All</paper-tab>
+    <paper-tab name="favorites">Favorites</paper-tab>
+  </paper-tabs>
+  </core-toolbar>
 <h1>MetaFlask</h1>
+
+</core-header-panel>
+</body>
+
+
+</html>

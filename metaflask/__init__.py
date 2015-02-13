@@ -8,6 +8,5 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 
-
-
 import metaflask.views
+import metaflask.msfapi
