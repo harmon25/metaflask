@@ -9,6 +9,8 @@ from metarpc import *
 def api(info):
 	if info == "stats":
 		return jsonify(stats=getStats())
+	elif info == "version":
+		return jsonify(version=getVersion())
 	elif info == "exploits":
 		return jsonify(exploits=getExploits())
 	elif info == "aux":
