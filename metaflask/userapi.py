@@ -3,10 +3,10 @@
 # @Author: harmoN
 # @Date:   2015-02-13 16:31:58
 # @Last Modified by:   harmoN
-# @Last Modified time: 2015-02-13 16:47:18
+# @Last Modified time: 2015-02-13 20:58:16
 from flask import jsonify
-from metaflask import app, auth, db
-from metaflask.models import User, 
+from metaflask import app, auth
+from metaflask.models import db, User
 
 @app.route('/api/users', methods=['POST'])
 def new_user():

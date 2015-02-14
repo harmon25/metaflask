@@ -3,9 +3,13 @@
 # @Author: harmoN
 # @Date:   2015-02-13 16:27:12
 # @Last Modified by:   harmoN
-# @Last Modified time: 2015-02-13 16:47:18
+# @Last Modified time: 2015-02-13 21:43:37
+from flask import g
 from flask.ext.sqlalchemy import SQLAlchemy
-from metaflask import app
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import SignatureExpired, BadSignature
+from passlib.apps import custom_app_context as pwd_context
+from metaflask import app, auth
 import config
 
 db = SQLAlchemy(app)
@@ -13,7 +17,7 @@ db = SQLAlchemy(app)
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(40), unique=True)
+    username = db.Column(db.String(40), index=True)
     password_hash = db.Column(db.String(128))
     create_date = db.Column(db.DateTime)
     is_active = db.Column(db.Boolean, default=True, unique=False)
@@ -39,6 +43,10 @@ class User(db.Model):
             return None # invalid token
         user = User.query.get(data['id'])
         return user
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password_hash = pwd_context.encrypt(password)
 
 @auth.verify_password
 def verify_password(username_or_token, password):
