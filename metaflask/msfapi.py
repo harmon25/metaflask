@@ -1,9 +1,34 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import jsonify
+from flask import jsonify, request, make_response, abort
 from metaflask import app, auth
 
-@app.route('/api/<page>', methods=['GET'])
-def api(page):
+from metarpc import *
 
-	return jsonify()
+@app.route('/api/<info>', methods=['GET'])
+def api(info):
+	if info == "stats":
+		return jsonify(stats=getStats())
+	elif info == "exploits":
+		return jsonify(exploits=getExploits())
+	elif info == "aux":
+		return jsonify(auxiliary=getAuxiliary())
+	elif info == "encoders":
+		return jsonify(encoders=getEncoders())
+	elif info == "nops":
+		return jsonify(nops=getNops())
+	elif info == "payloads":
+		return jsonify(payloads=getPayloads())
+	elif info == "post":
+		return jsonify(post=getPost())
+	else:
+		abort(404)
+
+
+
+
+
+
+
+
+	
