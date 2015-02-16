@@ -3,13 +3,13 @@
 # @Author: harmoN
 # @Date:   2015-02-13 16:27:12
 # @Last Modified by:   harmoN
-# @Last Modified time: 2015-02-13 21:43:37
+# @Last Modified time: 2015-02-15 10:57:34
 from flask import g
 from flask.ext.sqlalchemy import SQLAlchemy
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
 from passlib.apps import custom_app_context as pwd_context
-from metaflask import app, auth
+from metaflask import app
 import config
 
 db = SQLAlchemy(app)
@@ -48,14 +48,3 @@ class User(db.Model):
         self.username = username
         self.password_hash = pwd_context.encrypt(password)
 
-@auth.verify_password
-def verify_password(username_or_token, password):
-    # first try to authenticate by token
-    user = User.verify_auth_token(username_or_token)
-    if not user:
-        # try to authenticate with username/password
-        user = User.query.filter_by(username=username_or_token).first()
-        if not user or not user.verify_password(password):
-            return False
-    g.user = user
-    return True

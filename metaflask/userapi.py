@@ -3,10 +3,48 @@
 # @Author: harmoN
 # @Date:   2015-02-13 16:31:58
 # @Last Modified by:   harmoN
-# @Last Modified time: 2015-02-13 20:58:16
-from flask import jsonify
+# @Last Modified time: 2015-02-15 15:31:41
+from flask import jsonify, request, url_for,session, render_template,g,flash,redirect
 from metaflask import app, auth
 from metaflask.models import db, User
+
+
+@auth.verify_password
+def verify_password(username_or_token, password):
+    # first try to authenticate by token
+    user = User.verify_auth_token(username_or_token)
+    if not user:
+        # try to authenticate with username/password
+        user = User.query.filter_by(username=username_or_token).first()
+        if not user or not user.verify_password(password):
+            return False
+    g.user = user
+    return True
+
+@auth.error_handler
+def auth_error():
+    return "&lt;h1&gt;Access Denied&lt;/h1&gt;"
+
+
+@app.route('/api/login', methods=['POST'])
+def login_api():
+		username = request.json.get('u')
+		password = request.json.get('p')
+		# try to authenticate with username/password
+		user = User.query.filter_by(username=username).first()
+		if not user or not user.verify_password(password):
+			return redirect(url_for('login'))
+		g.user = user
+		session['logged_in'] = True
+		flash('You were logged in')
+		return redirect(url_for('index'))
+
+
+@app.route('/api/logout', methods=['GET'])
+def logout_api():
+		session.pop('logged_in', None)
+		flash('You were logged out')
+		return redirect(url_for('login'))
 
 @app.route('/api/users', methods=['POST'])
 def new_user():

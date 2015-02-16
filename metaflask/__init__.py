@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import Flask, g
+from flask import Flask
 import config
 from flask.ext.httpauth import HTTPBasicAuth
 
@@ -11,4 +11,4 @@ app.config.from_object('config')
 
 auth = HTTPBasicAuth()
 
-import metaflask.views, metaflask.msfapi, metaflask.userapi
+import metaflask.userapi, metaflask.views, metaflask.msfapi 

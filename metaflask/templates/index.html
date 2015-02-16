@@ -1,35 +1,93 @@
 <!doctype html>
 <html>
+	<head>
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+		<script src="static/bower_components/webcomponentsjs/webcomponents.js"> </script>
+		<link rel="import" href="static/bower_components/core-toolbar/core-toolbar.html">
+		<link rel="import" href="static/bower_components/core-animated-pages/core-animated-pages.html">
+		<link rel="import" href="static/bower_components/core-animated-pages/transitions/slide-from-right.html">
+		<link rel="import" href="static/bower_components/core-menu/core-menu.html">
+		<link rel="import" href="static/bower_components/core-item/core-item.html">
+		<link rel="import" href="static/bower_components/paper-item/paper-item.html">
+		<link rel="import" href="static/bower_components/core-icon/core-icon.html">
+		<link rel="import" href="static/bower_components/font-roboto/roboto.html">
+		<link rel="import" href="static/bower_components/flatiron-director/flatiron-director.html">
+		<link rel="import" href="static/bower_components/core-a11y-keys/core-a11y-keys.html">
+		<link rel="import" href="static/bower_components/core-icon-button/core-icon-button.html">
+		<link rel="import" href="static/bower_components/core-header-panel/core-header-panel.html">
+		<link rel="import" href="static/bower_components/core-drawer-panel/core-drawer-panel.html">
+		<link rel="import" href="static/bower_components/core-scaffold/core-scaffold.html">
 
-<head>
- <meta name="viewport"
-    content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-<script src="{{ url_for('static', filename='bower_components/webcomponentsjs/webcomponents.min.js') }}"></script>
-<link rel="import" href="{{ url_for('static', filename='bower_components/core-header-panel/core-header-panel.html') }}">
-<link rel="import" href="{{ url_for('static', filename='bower_components/core-toolbar/core-toolbar.html') }}">
-<link rel="import" href="{{ url_for('static', filename='bower_components/paper-tabs/paper-tabs.html') }}">
+		<link rel="stylesheet" href="/static/css/metaflask.css" shim-shadowdom>
+	</head>
+
+<body unresolved fullbleed>
+{% raw %}
+<template is="auto-binding" id="t">
 
 
+  <!-- Route controller. -->
+  <flatiron-director route="{{route}}" autoHash></flatiron-director>
 
+  <!-- Keyboard nav controller. -->
+  <core-a11y-keys id="keys" target="{{parentElement}}"
+                  keys="up down left right space space+shift"
+                  on-keys-pressed="{{keyHandler}}"></core-a11y-keys>
 
+<core-scaffold id="scaffold">
+	<nav>
+    	<core-toolbar>
+       		<span>MetaFlask</span>
+    	</core-toolbar>
+    	<core-menu valueattr="hash" selected="{{route}}" selectedModel="{{selectedPage}}" on-core-select="{{menuItemSelected}}">
+      		<template repeat="{{page, i in pages}}">
+   				<paper-item hash="{{page.hash}}" noink>
+   	   				<core-icon icon="label{{route != page.hash ? '-outline' : ''}}"></core-icon>
+   	   				<a href="#{{page.hash}}">{{page.name}}</a>
+   				</paper-item>
+        	</template>
+      	</core-menu>
+    </nav>
 
-</head>
+	<core-toolbar tool flex>
+        <div flex>{{selectedPage.page.name}}</div>
+        <core-icon-button icon="account-box" label="Account"></core-icon-button>
+         <a href="/api/logout"><core-icon-button icon="close" label="Logout">  </core-icon-button></a>
+    </core-toolbar>
 
-<styles>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/metaflask.css') }}">
-</styles>
-<body unresolved>
-<core-header-panel>
-  <core-toolbar>
-   <paper-tabs id="tabs" selected="all" self-end>
-    <paper-tab name="all">All</paper-tab>
-    <paper-tab name="favorites">Favorites</paper-tab>
-  </paper-tabs>
-  </core-toolbar>
-<h1>MetaFlask</h1>
+    <div layout horizontal center-center fit>
+        <core-animated-pages id="pages" selected="{{route}}" valueattr="hash" transitions="slide-from-right">
+            <section hash="home" layout vertical center-center>
+            <div>
+                {{selectedPage.page.msg}}
+            </div>
+          </section>
 
-</core-header-panel>
+          <section hash="auxiliary" layout vertical center-center>
+            <div>
+            {{selectedPage.page.msg}}
+            </div>
+          </section>
+
+         <section hash="exploits" layout vertical center-center>
+            <div>
+            {{selectedPage.page.msg}}
+            </div>
+         </section>
+
+        <section hash="payloads" layout vertical center-center>
+            <div>
+            {{selectedPage.page.msg}}
+            </div>
+       </section>
+
+      </core-animated-pages>
+    </div>
+
+  </core-scaffold>
+
+</template>
+<script src="static/js/metaflask.js"></script>
+{% endraw %}
 </body>
-
-
 </html>
