@@ -1,30 +1,40 @@
 <!DOCTYPE html>
 <html ng-app="BasicHttpAuthExample">
+<div ng-controller="LayoutController">
 <head>
 <meta charset="utf-8" />
 <title>AngularJS Basic HTTP Authentication Example</title>
-<link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/static/bower_components/angular-material/angular-material.min.css" />
+<link rel="stylesheet" href="/static/css/metaflask.css" />
 </head>
 <body>
-<div class="jumbotron">
-<div class="container">
-<div class="col-xs-offset-2 col-xs-8">
-<div ng-view></div>
-</div>
-</div>
-</div>
-<div class="credits text-center">
-<p>
-<a href="http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx">AngularJS Basic HTTP Authentication Example</a>
-</p>
-<p>
-<a href="http://jasonwatmore.com">JasonWatmore.com</a>
-</p>
-</div>
-<script src="/static/bower_components/jquery/dist/jquery.min.js"> </script>
+<md-toolbar layout="row">
+      <button ng-click="toggleSidenav('left')" hide-gt-sm class="menuBtn">
+        <span class="visually-hidden">Menu</span>
+      </button>
+      <h1>MetaFlask</h1>
+</md-toolbar>
+
+
+<div layout="row" flex>
+
+        <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
+          
+        </md-sidenav>
+        <div layout="column" flex id="content">
+            <md-content layout="column" flex class="md-padding">
+              <div ng-view></div>
+            </md-content>
+        </div>
+    </div>
+
+
 <script src="/static/bower_components/angular/angular.min.js"> </script>
 <script src="/static/bower_components/angular-route/angular-route.min.js"> </script>
 <script src="/static/bower_components/angular-cookies/angular-cookies.min.js"> </script>
+<script src="/static/bower_components/angular-animate/angular-animate.min.js"> </script>
+<script src="/static/bower_components/angular-aria/angular-aria.min.js"> </script>
+<script src="/static/bower_components/angular-material/angular-material.min.js"> </script>
 
 <script src="/static/scripts/app.js"></script>
 
@@ -32,4 +42,5 @@
 <script src="/static/modules/authentication/controllers.js"></script>
 <script src="/static/modules/home/controllers.js"></script>
 </body>
+</div>
 </html>

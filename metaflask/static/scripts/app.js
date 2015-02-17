@@ -8,7 +8,8 @@ angular.module('BasicHttpAuthExample', [
     'Authentication',
     'Home',
     'ngRoute',
-    'ngCookies'
+    'ngCookies',
+    'ngMaterial'
 ])
 
 .config(['$routeProvider', function ($routeProvider) {
@@ -16,13 +17,23 @@ angular.module('BasicHttpAuthExample', [
     $routeProvider
         .when('/login', {
             controller: 'LoginController',
-            templateUrl: '/static/modules/authentication/views/login.html',
+            templateUrl: '/views/login',
             hideMenus: true
         })
 
         .when('/', {
             controller: 'HomeController',
-            templateUrl: '/static/modules/home/views/home.html'
+            templateUrl: '/views/home'
+        })
+
+        .when('/about', {
+            controller: 'HomeController',
+            templateUrl: '/views/home'
+        })
+
+        .when('/private', {
+            controller: 'HomeController',
+            templateUrl: '/views/home'
         })
 
         .otherwise({ redirectTo: '/login' });

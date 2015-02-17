@@ -34,6 +34,7 @@ class User(db.Model):
     username = db.Column(db.String(40))
     password_hash = db.Column(db.String(128))
     active = db.Column(db.Boolean, default=True, unique=False)
+    api_key = db.Column(db.String(128))
     confirmed_at = db.Column(db.DateTime())
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))

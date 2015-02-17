@@ -3,6 +3,7 @@
 
 from flask import Flask
 from flask.ext.login import LoginManager
+import base64
 
 
 app = Flask(__name__)
@@ -14,7 +15,7 @@ login_manager = LoginManager()
 
 login_manager.init_app(app)
 
-
+from metaflask.models import db, User
 @login_manager.request_loader
 def load_user_from_request(request):
 

@@ -1,0 +1,30 @@
+﻿<md-content layout="column" class="md-padding">
+<section layout="row" layout-sm="column" layout-align="center">
+ <md-tooltip md-visible="error"> {{error_msg}} </md-tooltip> 
+ </section>
+<form name="form" ng-submit="login()" role="form">
+
+    <md-input-container>
+        <label>Username</label>
+        <input type="text" name="username" id="username" ng-model="username" placeholder="User" required />
+        <div ng-messages="form.username.$error">
+            <div ng-message="required">Username is required.</div>
+         </div>
+   
+    </md-input-container>
+    <md-input-container>
+        <label>Password</label>
+        <input type="password" name="password" id="password" placeholder="Pass" ng-model="password" required />
+        <div ng-messages="form.password.$error">
+            <div ng-message="required">Password is required.</div>
+        </div>
+    </md-input-container>
+   
+
+ <section layout="row" layout-sm="column" layout-align="left">
+        <md-button type="submit" ng-disabled="form.$invalid || dataLoading" class="md-raised md-primary">Login</md-button>
+        <div ng-if="dataLoading"> <md-progress-circular class="md-hue-2" md-mode="indeterminate"></md-progress-circular> </div>
+
+</section>
+</form>
+</md-content>

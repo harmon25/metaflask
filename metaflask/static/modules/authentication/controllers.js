@@ -3,7 +3,7 @@
 angular.module('Authentication')
 
 .controller('LoginController',
-    ['$scope', '$rootScope', '$location', 'AuthenticationService',
+    ['$scope', '$rootScope', '$location', 'AuthenticationService',  
     function ($scope, $rootScope, $location, AuthenticationService) {
         // reset login status
         AuthenticationService.ClearCredentials();
@@ -18,7 +18,8 @@ angular.module('Authentication')
                     $location.path('/');
                 } else {
                     $scope.dataLoading = false;
-                    $scope.error = response.message;
+                    $scope.error = true;
+                    $scope.error_msg = response.message;
                     
                 }
             });

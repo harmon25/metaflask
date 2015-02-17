@@ -12,6 +12,17 @@ from flask.ext.login import login_required
 def index():
     return make_response(open('metaflask/templates/index.html').read())
 
+
+@app.route('/views/login',methods=['GET'])
+def view_login():
+    return make_response(open('metaflask/templates/views/login.html').read())
+
+@app.route('/views/home',methods=['GET'])
+#@login_required
+def view_home():
+    return make_response(open('metaflask/templates/views/home.html').read())
+
+
 @app.errorhandler(401)
 def custom_401(error):
 	message = {"success": False, "message": "Authentication Failed"}
