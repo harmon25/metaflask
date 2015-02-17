@@ -4,7 +4,7 @@ import os
 import argparse
 import json
 
-from metaflask.models import db, User
+from metaflask.models import db, User, Role
 
 def create_db():
 	db.create_all()
@@ -30,11 +30,18 @@ def main():
 	elif args.command == 'seed_db' and args.seedfile:
 		with open(args.seedfile, 'r') as f:
 			seed_data = json.loads(f.read())
-	
-		for user in seed_data:
-			username=user.get("user")
-			password=user.get("pass")
+
+		for role in seed_data.get("roles"):
+			name = role.get("name")
+			desc = role.get("description")
+			db_role = Role(name,desc)
+			db.session.add(db_role)
+
+		for user in seed_data.get("users"):
+			username=user.get("username")
+			password=user.get("password")
 			role = user.get("role")
+			print username,password,role
 			db_user = User(username,password,role)
 			db.session.add(db_user)
 

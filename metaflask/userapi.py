@@ -5,56 +5,26 @@
 # @Last Modified by:   harmoN
 # @Last Modified time: 2015-02-15 15:31:41
 from flask import jsonify, request, url_for,session, render_template,g,flash,redirect
-from metaflask import app, auth
+from metaflask import app
 from metaflask.models import db, User
+from flask.ext.security import login_required
 
-
-@auth.verify_password
-def verify_password(username_or_token, password):
-    # first try to authenticate by token
-    user = User.verify_auth_token(username_or_token)
-    if not user:
-        # try to authenticate with username/password
-        user = User.query.filter_by(username=username_or_token).first()
-        if not user or not user.verify_password(password):
-            return False
-    g.user = user
-    return True
-
-@auth.error_handler
-def auth_error():
-    return "&lt;h1&gt;Access Denied&lt;/h1&gt;"
-
-
-@app.route('/api/login', methods=['POST'])
-def login_api():
-		username = request.json.get('u')
-		password = request.json.get('p')
-		# try to authenticate with username/password
-		user = User.query.filter_by(username=username).first()
-		if not user or not user.verify_password(password):
-			return redirect(url_for('login'))
-		g.user = user
-		session['logged_in'] = True
-		flash('You were logged in')
-		return redirect(url_for('index'))
-
-
-@app.route('/api/logout', methods=['GET'])
-def logout_api():
-		session.pop('logged_in', None)
-		flash('You were logged out')
-		return redirect(url_for('login'))
+def row2dict(row):
+    d = {}
+    for column in row.__table__.columns:
+        d[column.name] = str(getattr(row, column.name))
+    return d
 
 @app.route('/api/users', methods=['POST'])
 def new_user():
 	username = request.json.get('username')
 	password = request.json.get('password')
+	role = request.json.get('role')
 	if username is None or password is None:
 		abort(400)
 	if User.query.filter_by(username=username).first() is not None:
 		abort(400)
-	user = User(username=username)
+	user = User(username=username,role=role)
 	user.hash_password(password)
 	db.session.add(user)
 	db.session.commit()
@@ -70,7 +40,6 @@ def get_user(id):
     return jsonify({'username': user.username})
 
 @app.route('/api/token')
-@auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token(600)
     return jsonify({'token': token.decode('ascii'), 'duration': 600})

@@ -10,18 +10,33 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import SignatureExpired, BadSignature
 from passlib.apps import custom_app_context as pwd_context
 from metaflask import app
-import config
+
+from flask.ext.login import login_required
 
 db = SQLAlchemy(app)
 
+roles_users = db.Table('roles_users',
+        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+
+class Role(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
+    def __init__(self, name, desc):
+        self.name = name
+        self.description = desc
+
+
 class User(db.Model):
-    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(40), index=True)
+    username = db.Column(db.String(40))
     password_hash = db.Column(db.String(128))
-    role = db.Column(db.String(10), index=True)
-    create_date = db.Column(db.DateTime)
-    is_active = db.Column(db.Boolean, default=True, unique=False)
+    active = db.Column(db.Boolean, default=True, unique=False)
+    confirmed_at = db.Column(db.DateTime())
+    roles = db.relationship('Role', secondary=roles_users,
+                            backref=db.backref('users', lazy='dynamic'))
 
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
@@ -49,4 +64,6 @@ class User(db.Model):
         self.username = username
         self.role = role
         self.password_hash = pwd_context.encrypt(password)
+
+
 

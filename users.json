@@ -1,12 +1,24 @@
-[
-    {
-        "user": "guest",
-        "pass": "pass",
-        "role": "user"
-    },
-    {
-        "user": "admin",
-        "pass": "pass",
-        "role": "admin"
-    }
-]
+{
+    "users": [
+        {
+            "username": "admin",
+            "password": "pass",
+            "role": "1"
+        },
+        {
+            "username": "guest",
+            "password": "pass",
+            "role": "2"
+        }
+    ],
+    "roles": [
+        {
+            "name": "admin",
+            "description": "You a mofuckin admin"
+        },
+        {
+            "name": "guest",
+            "description": "Just a guest..."
+        }
+    ]
+}

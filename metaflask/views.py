@@ -2,8 +2,11 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, g, session, request, flash, redirect, url_for, Response
 from flask import send_file, make_response, abort, jsonify
-from metaflask import app, auth
+from metaflask import app
 from metaflask.models import db, User
+
+from flask.ext.login import login_required
+
 
 @app.route('/',methods=['GET'])
 def index():
@@ -17,18 +20,10 @@ def custom_401(error):
 	resp.headers['WWW-Authenticate'] = 'BasicCustom realm="metaflask"'
 	return resp
 
-
-@app.route('/logout', methods=['GET'])
-def logout():
-	session.pop('logged_in', None)
-	flash('You were logged out')
-	return redirect(url_for('login'))
-
 def row2dict(row):
     d = {}
     for column in row.__table__.columns:
         d[column.name] = str(getattr(row, column.name))
-
     return d
 
 @app.route('/login',methods=['POST'])
