@@ -19,6 +19,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(40), index=True)
     password_hash = db.Column(db.String(128))
+    role = db.Column(db.String(10), index=True)
     create_date = db.Column(db.DateTime)
     is_active = db.Column(db.Boolean, default=True, unique=False)
 
@@ -44,7 +45,8 @@ class User(db.Model):
         user = User.query.get(data['id'])
         return user
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, role):
         self.username = username
+        self.role = role
         self.password_hash = pwd_context.encrypt(password)
 

@@ -34,7 +34,8 @@ def main():
 		for user in seed_data:
 			username=user.get("user")
 			password=user.get("pass")
-			db_user = User(username,password)
+			role = user.get("role")
+			db_user = User(username,password,role)
 			db.session.add(db_user)
 
 		db.session.commit()

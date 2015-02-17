@@ -24,6 +24,13 @@ def logout():
 	flash('You were logged out')
 	return redirect(url_for('login'))
 
+def row2dict(row):
+    d = {}
+    for column in row.__table__.columns:
+        d[column.name] = str(getattr(row, column.name))
+
+    return d
+
 @app.route('/login',methods=['POST'])
 def login():
 	username = request.json.get("username")
@@ -34,9 +41,10 @@ def login():
 		abort(401)
 		#raise InvalidAPIUsage(message, status_code=401) 
 	else:
-		g.user = user
+		user_auth = row2dict(user)
+		g.user = username
 		session['logged_in'] = True
-		message = {"success": "true"}
+		message = {"success": "true", "username": user_auth.get("username"), "role": user_auth.get("role")}
 		flash('You were logged in')
 		return jsonify(message)
 

@@ -1,10 +1,12 @@
 [
     {
         "user": "guest",
-        "pass": "pass"
+        "pass": "pass",
+        "role": "user"
     },
     {
         "user": "admin",
-        "pass": "pass"
+        "pass": "pass",
+        "role": "admin"
     }
 ]
