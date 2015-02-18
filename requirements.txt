@@ -1,5 +1,5 @@
 flask
 itsdangerous
-flask-httpauth
+flask-login
 flask-sqlalchemy
 passlib

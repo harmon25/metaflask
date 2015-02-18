@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import os
 import argparse
@@ -33,19 +33,27 @@ def main():
 
 		for role in seed_data.get("roles"):
 			name = role.get("name")
-			desc = role.get("description")
-			db_role = Role(name,desc)
+			desc = role.get("desc")
+			db_role = Role(name=name,description=desc)
 			db.session.add(db_role)
+
+		db.session.commit()
 
 		for user in seed_data.get("users"):
 			username=user.get("username")
 			password=user.get("password")
-			role = user.get("role")
-			print username,password,role
-			db_user = User(username,password,role)
+			roles = user.get("roles")
+			print username,password, roles
+			db_user = User(username=username,password=password)
 			db.session.add(db_user)
+			for role in roles:
+				db_user.check_role
+				to_add = Role.query.filter_by(name=role)
+				db_user.add_role(to_add)
+				db.session.add(db_user)
 
 		db.session.commit()
+		db.session.close()
 		print "\nUser Data added to database!"
 	else:
 		raise Exception('Invalid command')

@@ -7,7 +7,7 @@
 from flask import jsonify, request, url_for,session, render_template,g,flash,redirect
 from metaflask import app
 from metaflask.models import db, User
-from flask.ext.security import login_required
+from flask.ext.login import login_required
 
 def row2dict(row):
     d = {}
