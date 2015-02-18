@@ -47,10 +47,13 @@ def login():
 		abort(401)
 		#raise InvalidAPIUsage(message, status_code=401) 
 	else:
-		user_auth = row2dict(user)
+		roles = []
+		for role in user.roles:
+			roles.append(str(role))
+
 		g.user = username
 		session['logged_in'] = True
-		message = {"success": "true", "username": user_auth.get("username"), "role": user_auth.get("role")}
+		message = {"success": "true", "username": user.username, "roles": roles}
 		flash('You were logged in')
 		return jsonify(message)
 

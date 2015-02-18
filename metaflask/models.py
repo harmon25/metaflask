@@ -12,6 +12,10 @@ from itsdangerous import SignatureExpired, BadSignature
 from passlib.apps import custom_app_context as pwd_context
 from metaflask import app
 
+
+# admins = User.query.filter(User._roles.any(name='admin')).all()
+# users = User.query.filter(User._roles.any(name='guest')).all()
+
 db = SQLAlchemy(app)
 
 def is_sequence(arg):
@@ -49,9 +53,8 @@ class Role(db.Model):
     abilities = db.relationship(
         'Ability', secondary=role_ability_table, backref='roles')
 
-    def __init__(self, name, description):
+    def __init__(self, name):
         self.name = name.lower()
-        self.description = description
 
     def add_abilities(self, *abilities):
         for ability in abilities:
@@ -69,8 +72,9 @@ class Role(db.Model):
             if existing_ability and existing_ability in self.abilities:
                 self.abilities.remove(existing_ability)
 
-    def __repr__(self,name):
-        print "<Role: {} >".format(name) 
+    def __repr__(self):
+        return "<Role: {} >".format(self.name)
+
 
     def __str__(self):
         return self.name
@@ -87,7 +91,7 @@ class Ability(db.Model):
         return '<Ability {}>'.format(self.name)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class User(db.Model):
@@ -153,9 +157,9 @@ class User(db.Model):
         return unicode(self.id)
 
     def __repr__(self):
-        return '<User {}>'.format(self.id)
+        return '<User {}>'.format(self.username)
     
     def __str__(self):
-        return self.username
+        return str(self.username)
 
 

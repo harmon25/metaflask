@@ -34,8 +34,9 @@ def main():
 		for role in seed_data.get("roles"):
 			name = role.get("name")
 			desc = role.get("desc")
-			db_role = Role(name=name, description=desc)
+			db_role = Role(name=name)
 			db.session.add(db_role)
+			db_role.description = desc
 			db.session.commit()
 
 		for user in seed_data.get("users"):

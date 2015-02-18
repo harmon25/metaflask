@@ -13,8 +13,8 @@ angular.module('Authentication')
             AuthenticationService.Login($scope.username, $scope.password, function (response) {
                 if (response.success) {
                     var auth_user = response.username
-                    var auth_role = response.role
-                    AuthenticationService.SetCredentials(auth_user, $scope.password, auth_role);
+                    var auth_roles = response.roles
+                    AuthenticationService.SetCredentials(auth_user, $scope.password, auth_roles);
                     $location.path('/');
                 } else {
                     $scope.dataLoading = false;
