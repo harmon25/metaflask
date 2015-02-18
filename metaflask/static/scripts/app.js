@@ -1,15 +1,16 @@
 ﻿'use strict';
 
 // declare modules
-angular.module('Authentication', []);
-angular.module('Home', []);
+angular.module('Authentication', ['lumx']);
+angular.module('Home', ['lumx']);
 
 angular.module('BasicHttpAuthExample', [
     'Authentication',
     'Home',
     'ngRoute',
     'ngCookies',
-    'ngMaterial'
+    'ngMaterial',
+    'lumx'
 ])
 
 .config(['$routeProvider', function ($routeProvider) {

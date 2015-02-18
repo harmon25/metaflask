@@ -4,10 +4,15 @@
 angular.module('Home')
 
 .controller('LayoutController',
-    ['$scope','$rootScope','$mdSidenav', 
-    function ($scope, $rootScope, $mdSidenav) {
+    ['$scope','$rootScope','$mdSidenav','LxNotificationService',
+    function ($scope, $rootScope, $mdSidenav, LxNotificationService) {
     	  $scope.toggleSidenav = function(menuId) {
-    	  $mdSidenav(menuId).toggle();}
+    	  $mdSidenav(menuId).toggle();};
+
+   $scope.notify = function(){
+        LxNotificationService.warning('Lorem Ipsum');
+          };
+    
 
     }]);
 

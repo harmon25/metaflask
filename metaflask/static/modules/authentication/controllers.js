@@ -3,8 +3,8 @@
 angular.module('Authentication')
 
 .controller('LoginController',
-    ['$scope', '$rootScope', '$location', 'AuthenticationService',  
-    function ($scope, $rootScope, $location, AuthenticationService) {
+    ['$scope', '$rootScope', '$location', 'AuthenticationService', 'LxNotificationService', 
+    function ($scope, $rootScope, $location, AuthenticationService, LxNotificationService) {
         // reset login status
         AuthenticationService.ClearCredentials();
 
@@ -24,4 +24,11 @@ angular.module('Authentication')
                 }
             });
         };
+
+
+        $scope.notify = function(){
+        LxNotificationService.warning('Lorem Ipsum');
+          };
+    
+
     }]);

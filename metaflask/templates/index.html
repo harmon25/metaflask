@@ -2,10 +2,12 @@
 <html ng-app="BasicHttpAuthExample">
 <div ng-controller="LayoutController">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8" >
 <title>MetaFlask</title>
-<link rel="stylesheet" href="/static/bower_components/angular-material/angular-material.min.css" />
-<link rel="stylesheet" href="/static/css/metaflask.css" />
+<link rel="stylesheet" href="/static/bower_components/angular-material/angular-material.min.css">
+<link rel="stylesheet" href="/static/css/metaflask.css">
+<link rel="stylesheet" href="/static/bower_components/lumx/dist/lumx.css">
+<link rel="stylesheet" href="/static/bower_components/mdi/materialdesignicons.css">
 </head>
 <body>
 <md-toolbar layout="row">
@@ -14,28 +16,71 @@
       </button>
       <h1>MetaFlask</h1>
 </md-toolbar>
+<div class="card">
+    <div class="toolbar">
+        <div class="toolbar__left mr+++">
+            <button class="btn btn--l btn--black btn--icon" lx-ripple>
+                <i class="mdi mdi-menu"></i>
+            </button>
+        </div>
+
+        <span class="toolbar__label fs-title">Control Panel</span>
+
+        <div class="toolbar__right">
+            <lx-search-filter closed theme="light"></lx-search-filter>
+
+            <lx-dropdown position="right" from-top>
+                <button class="btn btn--l btn--black btn--icon" lx-ripple lx-dropdown-toggle>
+                    <i class="mdi mdi-dots-vertical"></i>
+                </button>
+
+                <lx-dropdown-menu>
+                    <ul>
+                        <li><a class="dropdown-link">Action</a></li>
+                        <li><a class="dropdown-link">Another action</a></li>
+                        <li><a class="dropdown-link">Something else here</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a class="dropdown-link dropdown-link--is-header">Header</a></li>
+                        <li><a class="dropdown-link">Separated link</a></li>
+                    </ul>
+                </lx-dropdown-menu>
+            </lx-dropdown>
+        </div>
+    </div>
+</div>
 
 
-<div layout="row" flex>
-
-        <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
-          
-        </md-sidenav>
+<div layout="row" flex> 
         <div layout="column" flex id="content">
             <md-content layout="column" flex class="md-padding">
+            <button class="btn btn--m btn--black btn--flat" ng-click="notify('error')" lx-ripple>Error notification</button>
               <div ng-view>
               </div>
             </md-content>
+            <md-divider inset></md-divider>
+            
         </div>
     </div>
 
 
-<script src="/static/bower_components/angular/angular.min.js"> </script>
+
+
+<script src="/static/bower_components/jquery/dist/jquery.js"></script>
+<script src="/static/bower_components/velocity/velocity.js"></script>
+<script src="/static/bower_components/moment/min/moment-with-locales.js"></script>
+
+<script src="/static/bower_components/angular/angular.js"> </script>
+<script src="/static/bower_components/lumx/dist/lumx.js"></script>
 <script src="/static/bower_components/angular-route/angular-route.min.js"> </script>
 <script src="/static/bower_components/angular-cookies/angular-cookies.min.js"> </script>
 <script src="/static/bower_components/angular-animate/angular-animate.min.js"> </script>
 <script src="/static/bower_components/angular-aria/angular-aria.min.js"> </script>
-<script src="/static/bower_components/angular-material/angular-material.min.js"> </script>
+<script src="/static/bower_components/angular-material/angular-material.js"> </script>
+
+
+
+
+
 
 <script src="/static/scripts/app.js"></script>
 
