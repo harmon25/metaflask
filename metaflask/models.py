@@ -27,13 +27,6 @@ def _role_find_or_create(r):
         db.session.add(role)
     return role
 
-'''
-user_roles = db.Table('user_roles',
-    db.Column('user_id', db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE')),
-    db.Column('role_id', db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
-    )
-'''
-
 user_role_table = db.Table('user_role',
                            db.Column(
                                'user_id', db.Integer, db.ForeignKey('user.id')),
@@ -49,8 +42,6 @@ role_ability_table = db.Table('role_ability',
                               'ability_id', db.Integer, db.ForeignKey('ability.id'))
                               )
 
-
-
 class Role(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
@@ -58,8 +49,9 @@ class Role(db.Model):
     abilities = db.relationship(
         'Ability', secondary=role_ability_table, backref='roles')
 
-    def __init__(self, name):
+    def __init__(self, name, description):
         self.name = name.lower()
+        self.description = description
 
     def add_abilities(self, *abilities):
         for ability in abilities:
@@ -98,73 +90,6 @@ class Ability(db.Model):
         return self.name
 
 
-
-''' old user model..
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(40))
-    password_hash = db.Column(db.String(128))
-    active = db.Column(db.Boolean, default=True, unique=False)
-    api_key = db.Column(db.String(128))
-    confirmed_at = db.Column(db.DateTime())
-    roles = db.relationship('Role', secondary=user_roles, 
-            primaryjoin=(user_roles.c.user_id == id), 
-            secondaryjoin=(user_roles.c.role_id == role_id), 
-            backref=db.backref('user_roles', lazy='dynamic'), 
-            lazy='dynamic')
-
-    def hash_password(self, password):
-        self.password_hash = pwd_context.encrypt(password)
-
-    def verify_password(self, password):
-        return pwd_context.verify(password, self.password_hash)
-
-    def generate_auth_token(self, expiration = 600):
-        s = Serializer(app.config['SECRET_KEY'], expires_in = expiration)
-        return s.dumps({ 'id': self.api_key })
-
-    def add_role(self, role):
-        if not self.check_role:
-            self.roles.append(role)
-            return self
-    
-    def del_role(self, role):
-          if self.check_role:
-            self.roles.remove(role)
-            return self
-
-    def check_role(self, role):
-        return self.roles.filter(user_roles.c.role_id == user.id).count() > 0
-
-    @staticmethod
-    def verify_auth_token(token):
-        s = Serializer(app.config['SECRET_KEY'])
-        try:
-            data = s.loads(token)
-        except SignatureExpired:
-            return None # valid token, but expired
-        except BadSignature:
-            return None # invalid token
-        user = User.query.get(data['api_key'])
-        return user
-
-    def __init__(self, **kwargs):
-        if kwargs.get('username'):
-            self.username = kwargs.get('username')
-        if kwargs.get('password'):
-            self.password_hash = pwd_context.encrypt(kwargs.get('password'))
-        if self.roles == None:
-            roles = []
-
-    def __repr__(self, username):
-        print "<User: {} >".format(username) 
-
-     def __str__(self):
-        return self.username
-
-'''
-
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(40))
@@ -172,11 +97,12 @@ class User(db.Model):
     _roles = db.relationship(
         'Role', secondary=user_role_table, backref='users')
     type = db.Column(db.String(50))
+    api_key = db.Column(db.String(128))
 
     roles = association_proxy('_roles', 'name', creator=_role_find_or_create)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'usermixin',
+        'polymorphic_identity': 'user',
         'polymorphic_on': type
     }
 

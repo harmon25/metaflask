@@ -4,7 +4,7 @@ import os
 import argparse
 import json
 
-from metaflask.models import db, User, Role
+from metaflask.models import db, User, Role, Ability
 
 def create_db():
 	db.create_all()
@@ -34,27 +34,31 @@ def main():
 		for role in seed_data.get("roles"):
 			name = role.get("name")
 			desc = role.get("desc")
-			db_role = Role(name=name,description=desc)
+			db_role = Role(name=name, description=desc)
 			db.session.add(db_role)
-
-		db.session.commit()
+			db.session.commit()
 
 		for user in seed_data.get("users"):
 			username=user.get("username")
 			password=user.get("password")
 			roles = user.get("roles")
 			print username,password, roles
-			db_user = User(username=username,password=password)
+			db_user = User(username=username,password=password,roles=roles, default_role=None)
 			db.session.add(db_user)
-			for role in roles:
-				db_user.check_role
-				to_add = Role.query.filter_by(name=role)
-				db_user.add_role(to_add)
-				db.session.add(db_user)
+			db.session.commit()
 
+		role = Role.query.filter_by(name='admin').first()
+		abilities = ['create_users', 'set_roles', 'set_abilities']
+		for ability in abilities:
+			new_ability = Ability(ability)
+			db.session.add(new_ability)
+			db.session.commit()
+		role.add_abilities(*abilities)
+		db.session.add(role)
 		db.session.commit()
+		
 		db.session.close()
-		print "\nUser Data added to database!"
+		print "\nUser Role and Ability Data added to database!"
 	else:
 		raise Exception('Invalid command')
 

@@ -3,12 +3,12 @@
         {
             "username": "admin",
             "password": "pass",
-            "roles": ["admin","guest"]
+            "roles": ["admin","user"]
         },
         {
             "username": "guest",
             "password": "pass",
-            "roles": ["guest"]
+            "roles": ["user"]
         }
     ],
     "roles": [
@@ -17,8 +17,8 @@
             "desc": "You a mofuckin admin"
         },
         {
-            "name": "guest",
-            "desc": "Just a guest..."
+            "name": "user",
+            "desc": "Just a user..."
         }
     ]
 }
