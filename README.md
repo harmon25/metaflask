@@ -1,2 +1,2 @@
 # metaflask
-Metasploit front-end powered by Flask and Polymer
+Metasploit front-end powered by Flask and AngunlarJS
