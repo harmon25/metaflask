@@ -18,17 +18,13 @@ angular.module('Authentication')
                     $location.path('/');
                 } else {
                     $scope.dataLoading = false;
-                    $scope.error = true;
-                    $scope.error_msg = response.message;
+                    LxNotificationService.warning(response.message);
                     
                 }
             });
         };
 
 
-        $scope.notify = function(){
-        LxNotificationService.warning('Lorem Ipsum');
-          };
-    
+
 
     }]);

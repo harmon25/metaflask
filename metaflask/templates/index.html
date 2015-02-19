@@ -11,21 +11,30 @@
 </head>
 <body>
 <md-toolbar layout="row">
-      <button ng-click="toggleSidenav('left')" hide-gt-sm class="menuBtn">
-        <span class="visually-hidden">Menu</span>
-      </button>
-      <h1>MetaFlask</h1>
+      <h1>MetaFlask </h1>
 </md-toolbar>
+<div ng-if="globals.currentUser.username">
 <div class="card">
     <div class="toolbar">
         <div class="toolbar__left mr+++">
-            <button class="btn btn--l btn--black btn--icon" lx-ripple>
+  <lx-dropdown>
+    <button class="btn btn--l btn--black btn--icon" lx-ripple  lx-dropdown-toggle>
                 <i class="mdi mdi-menu"></i>
             </button>
+
+    <lx-dropdown-menu>
+        <ul>
+            <li><a class="dropdown-link" ng-click="dropdownAlert()">Notification</a></li>
+            <li><a class="dropdown-link">Another action</a></li>
+            <li><a class="dropdown-link">Something else here</a></li>
+            <li class="dropdown-divider"></li>
+            <li><span class="dropdown-link dropdown-link--is-header">Header</span></li>
+            <li><a class="dropdown-link">Separated link</a></li>
+        </ul>
+    </lx-dropdown-menu>
+</lx-dropdown>
+
         </div>
-
-        <span class="toolbar__label fs-title">Control Panel</span>
-
         <div class="toolbar__right">
             <lx-search-filter closed theme="light"></lx-search-filter>
 
@@ -38,24 +47,21 @@
                     <ul>
                         <li><a class="dropdown-link">Action</a></li>
                         <li><a class="dropdown-link">Another action</a></li>
-                        <li><a class="dropdown-link">Something else here</a></li>
+                        <li ng-if="globals.currentUser.roles.indexOf('admin') >= 0"><a class="dropdown-link">Add User</a></li>
                         <li class="dropdown-divider"></li>
-                        <li><a class="dropdown-link dropdown-link--is-header">Header</a></li>
-                        <li><a class="dropdown-link">Separated link</a></li>
+                        <li><a href="#/login" class="dropdown-link">Logout</a></li>
                     </ul>
                 </lx-dropdown-menu>
             </lx-dropdown>
         </div>
     </div>
 </div>
-
+</div>
 
 <div layout="row" flex> 
         <div layout="column" flex id="content">
             <md-content layout="column" flex class="md-padding">
-            <button class="btn btn--m btn--black btn--flat" ng-click="notify('error')" lx-ripple>Error notification</button>
-              <div ng-view>
-              </div>
+              <div ng-view> </div>
             </md-content>
             <md-divider inset></md-divider>
             

@@ -1,9 +1,12 @@
-<md-content layout="column" class="md-padding">
-<section layout="row" layout-sm="column" layout-align="center">
- <md-tooltip md-visible="error"> {{error_msg}} </md-tooltip> 
- </section>
-<form name="form" ng-submit="login()" role="form">
+<div flex-container="row" flex-align="center" >
+<div flex-item="5">
 
+        <div class="card">
+        <form name="form" ng-submit="login()" role="form">
+        
+            <div class="p+">
+                <strong class="fs-headline display-block">Please Login</strong>
+                <div class="paragraph fs-body-1 mt+">                   
     <md-input-container>
         <label>Username</label>
         <input type="text" name="username" id="username" ng-model="username" required />
@@ -20,11 +23,14 @@
         </div>
     </md-input-container>
    
-
- <section layout="row" layout-sm="column" layout-align="left">
-        <md-button type="submit" ng-disabled="form.$invalid || dataLoading" class="md-raised md-primary">Login</md-button>
-        <div ng-if="dataLoading"> <md-progress-circular class="md-hue-2" md-mode="indeterminate"></md-progress-circular> </div>
-
-</section>
-</form>
-</md-content>
+                </div>
+            </div>
+            <div class="card__actions">
+             <button class="btn btn--m btn--green btn--raised" type="submit" ng-disabled="form.$invalid || dataLoading" lx-ripple>Login</button>
+            <div ng-if="dataLoading"> <md-progress-circular class="md-hue-2" md-mode="indeterminate"></md-progress-circular> </div>
+            </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
