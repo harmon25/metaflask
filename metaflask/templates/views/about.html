@@ -1,6 +1,17 @@
-<div ng-controller="HomeController">
-<h1>About</h1>
-<p>You're logged in!! - {{username}}</p>
+<div flex-container="row" flex-align="center" >
 
-<p><a href="#/login">Logout</a></a></p>
+<div flex-item="6">
+ <div class="card">
+ <div class="p+">
+ <strong class="fs-headline display-block">About</strong>
+    <span class="fs-subhead tc-black-2 display-block">{{username}}</span>
+   <div class="paragraph fs-body-1 mt+">   
+   {{globals.currentUser.roles[0]}}
+   <div ng-if="globals.currentUser.roles.indexOf('admin') >= 0" ><i class="mdi mdi-xbox"></i></div>
+
+</div>
+</div>
+</div>
+</div>
+
 </div>

@@ -4,16 +4,58 @@
 # @Date:   2015-02-13 16:31:58
 # @Last Modified by:   harmoN
 # @Last Modified time: 2015-02-15 15:31:41
-from flask import jsonify, request, url_for,session, render_template,g,flash,redirect
-from metaflask import app
+from flask import jsonify, request, url_for,session, render_template, g, flash,redirect, abort
+from metaflask import app, jwt
 from metaflask.models import db, User
-from flask.ext.login import login_required
+from datetime import datetime
+from flask_jwt import jwt_required, current_user
+
+@jwt.authentication_handler
+def authenticate(username, password):
+    user = User.query.filter_by(username=username).first()
+    if not user or not user.verify_password(password):
+        return False
+    else:
+        return user
+
+@jwt.payload_handler
+def make_payload(user):
+    return {
+        "user_id": user.id,
+        "exp": str(datetime.utcnow() + app.config['JWT_EXPIRATION_DELTA'])
+            }
+
+@jwt.user_handler
+def load_user(payload):
+    if payload['user_id']:
+        return User.query.filter_by(id=payload['user_id']).first()
+
+@jwt.error_handler
+def error_handler(error):
+    message = {"success": False, "message": 'Authentication Failed'}
+    resp = jsonify(message)
+    resp.status_code=401
+    resp.headers['WWW-Authenticate'] = 'BasicCustom realm="metaflask"'
+    return resp
 
 def row2dict(row):
     d = {}
     for column in row.__table__.columns:
         d[column.name] = str(getattr(row, column.name))
     return d
+
+
+@app.route('/api/user', methods=['GET'])
+@jwt_required()
+def whoami():
+	if current_user:
+		user = current_user
+		print user
+		return jsonify({"username": user.username, "roles":str(user.roles)})
+	else:
+		 abort(400)
+
+
 
 @app.route('/api/users', methods=['POST'])
 def new_user():
@@ -39,7 +81,3 @@ def get_user(id):
         abort(400)
     return jsonify({'username': user.username})
 
-@app.route('/api/token')
-def get_auth_token():
-    token = g.user.generate_auth_token(600)
-    return jsonify({'token': token.decode('ascii'), 'duration': 600})

@@ -13,7 +13,7 @@
 <md-toolbar layout="row">
       <h1>MetaFlask </h1>
 </md-toolbar>
-<div ng-if="globals.currentUser.username">
+<div ng-if="globals.currentUser.token">
 <div class="card">
     <div class="toolbar">
         <div class="toolbar__left mr+++">
@@ -24,8 +24,8 @@
 
     <lx-dropdown-menu>
         <ul>
-            <li><a class="dropdown-link" ng-click="dropdownAlert()">Notification</a></li>
-            <li><a class="dropdown-link">Another action</a></li>
+            <li><a href="#/" class="dropdown-link">Home</a></li>
+            <li><a href="#/about" class="dropdown-link">About</a></li>
             <li><a class="dropdown-link">Something else here</a></li>
             <li class="dropdown-divider"></li>
             <li><span class="dropdown-link dropdown-link--is-header">Header</span></li>
@@ -80,6 +80,7 @@
 <script src="/static/bower_components/lumx/dist/lumx.js"></script>
 <script src="/static/bower_components/angular-route/angular-route.min.js"> </script>
 <script src="/static/bower_components/angular-cookies/angular-cookies.min.js"> </script>
+<script src="/static/bower_components/angular-resource/angular-resource.min.js"> </script>
 <script src="/static/bower_components/angular-animate/angular-animate.min.js"> </script>
 <script src="/static/bower_components/angular-aria/angular-aria.min.js"> </script>
 <script src="/static/bower_components/angular-material/angular-material.js"> </script>
@@ -94,6 +95,7 @@
 <script src="/static/modules/authentication/services.js"></script>
 <script src="/static/modules/authentication/controllers.js"></script>
 <script src="/static/modules/home/controllers.js"></script>
+<script src="/static/modules/home/services.js"></script>
 </body>
 </div>
 </html>

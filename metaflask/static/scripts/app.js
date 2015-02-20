@@ -1,14 +1,15 @@
 ﻿'use strict';
 
 // declare modules
-angular.module('Authentication', ['lumx']);
-angular.module('Home', ['lumx']);
+angular.module('Authentication', []);
+angular.module('Home', []);
 
 angular.module('BasicHttpAuthExample', [
     'Authentication',
     'Home',
     'ngRoute',
     'ngCookies',
+    'ngResource',
     'ngMaterial',
     'lumx'
 ])
@@ -30,7 +31,7 @@ angular.module('BasicHttpAuthExample', [
 
         .when('/about', {
             controller: 'HomeController',
-            templateUrl: '/views/home',
+            templateUrl: '/views/about',
             access: { roles: ['user'] }
         })
 
@@ -48,12 +49,12 @@ angular.module('BasicHttpAuthExample', [
         // keep user logged in after page refresh
         $rootScope.globals = $cookieStore.get('globals') || {};
         if ($rootScope.globals.currentUser) {
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+            $http.defaults.headers.common['Authorization'] = 'Bearer ' + $rootScope.globals.currentUser.token; // jshint ignore:line
           }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in
-            if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
+            if ($location.path() !== '/login' && !$rootScope.globals.currentUser.token) {
                 $location.path('/login');
             }
         });
